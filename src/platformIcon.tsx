@@ -194,7 +194,7 @@ const PlatformIcon = ({
 
   return (
     <img
-      src={iconPath}
+      src={iconPath.default}
       width={size}
       height={size}
       {...otherProps}
