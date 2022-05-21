@@ -111,6 +111,16 @@ export const PLATFORM_TO_ICON = {
   // Please add them where they belong alphabetically
 } as const;
 
+/**
+ * Wrapper function to import images with require
+ */
+function requireImage(path: string) {
+  const module = require(path);
+  // it seems that webpack 5 will put the actual image URL
+  // in the property default so we need to check for it there
+  return module?.default ?? module;
+}
+
 function normalizePlatform(platform: string): string {
   // sentry uses format python-django, but docs uses python.django
   // this function normalizes that
@@ -160,12 +170,12 @@ const PlatformIcon = ({
   ...otherProps
 }: Props) => {
   const icon = getIcon(platform);
-  const iconPath = require(`../${
+  const iconPath = requireImage(`../${
     format === "lg" ? "svg_80x80" : "svg"
   }/${icon}.svg`);
 
   const languageIcon = getLanguageIcon(platform);
-  const languageIconPath = require(`../svg/${languageIcon}.svg`);
+  const languageIconPath = requireImage(`../svg/${languageIcon}.svg`);
 
   if (withLanguageIcon && languageIcon !== icon && languageIcon !== "default") {
     return (
